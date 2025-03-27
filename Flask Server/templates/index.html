@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Panel</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+}
+
+h1 {
+    color: #4CAF50;
+    font-size: 2.5em;
+}
+
+p {
+    color: #555;
+    font-size: 1.2em;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 200px; /* Set fixed width for buttons */
+    margin: 5px; /* Reduce margin between buttons */
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.section {
+    margin-bottom: 40px;
+}
+
+#error {
+    color: red;
+    font-size: 1.1em;
+    margin-top: 20px;
+}
+
+#loading {
+    font-size: 1.1em;
+    margin-top: 20px;
+    color: blue;
+}
+
+/* New styles for aligning buttons in a row */
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* Allow buttons to wrap onto a new line if needed */
+    gap: 10px; /* Add a small gap between buttons */
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Device Control Page</h1>
+        <p>Control your devices here:</p>
+    
+        <div class="section">
+            <h1>Aircon Control</h1>
+            <div class="buttons-container">
+                <button id="turnOnAircon" name="action" value="on">Turn On Aircon</button>
+                <button id="turnOffAircon" name="action" value="off">Turn Off Aircon</button>
+            </div>
+        </div>
+    
+        <div class="section">
+            <h1>Medication Control</h1>
+            <div class="buttons-container">
+                <button id="dispenseMedication" name="action" value="dispense">Dispense Medication</button>
+                <button id="startAutoDispenseMedication" name="action" value="start_auto_dispense">Start Auto Dispense Medication</button>
+                <button id="stopAutoDispenseMedication" name="action" value="stop_auto_dispense">Stop Auto Dispense Medication</button>
+            </div>
+        </div>
+    
+        <div id="error"></div>
+        <div id="loading"></div>
+    </div>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.3.0/dist/web3.min.js"></script>
+    <script>
+        // Check if MetaMask is available
+        if (typeof window.ethereum !== 'undefined') {
+            const web3 = new Web3(window.ethereum);
+
+            // Request the user's Ethereum address
+            let userAddress = null;
+
+            window.ethereum.request({ method: 'eth_requestAccounts' })
+                .then(accounts => {
+                    userAddress = accounts[0];
+                    console.log('Connected account:', userAddress);
+                })
+                .catch((error) => {
+                    document.getElementById('error').innerText = 'Please connect to MetaMask.';
+                });
+
+            // Sign a message with MetaMask to prove ownership of the address
+            async function signMessage(message) {
+                try {
+                    const signature = await web3.eth.personal.sign(message, userAddress);
+                    return signature;
+                } catch (error) {
+                    console.error('Error signing message:', error);
+                    return null;
+                }
+            }
+
+            // Function to send signed message and address to Flask backend
+            async function sendRequest(action, actionValue) {
+                const message = `I want to perform the action: ${actionValue}`;
+                const signature = await signMessage(message);
+
+                if (signature) {
+                    document.getElementById('loading').innerText = 'Processing request...';
+
+                    // Send the action and signature to your Flask backend
+                    const response = await fetch('/perform_action', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userAddress,
+                            signature,
+                            action,
+                            actionValue
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        document.getElementById('loading').innerText = '';
+                        alert(result.message);  // Show success message
+                    } else {
+                        document.getElementById('loading').innerText = '';
+                        document.getElementById('error').innerText = result.error || 'Unauthorized user!';
+                    }
+                }
+            }
+
+            // Attach event listeners to the buttons
+            document.getElementById('turnOnAircon').addEventListener('click', function() {
+                sendRequest('aircon', 'on');
+            });
+
+            document.getElementById('turnOffAircon').addEventListener('click', function() {
+                sendRequest('aircon', 'off');
+            });
+
+            document.getElementById('dispenseMedication').addEventListener('click', function() {
+                sendRequest('medication', 'dispense');
+            });
+
+            document.getElementById('startAutoDispenseMedication').addEventListener('click', function() {
+                sendRequest('medication', 'start_auto_dispense');
+            });
+            document.getElementById('stopAutoDispenseMedication').addEventListener('click', function() {
+                sendRequest('medication', 'stop_auto_dispense');
+            });
+        } else {
+            document.getElementById('error').innerText = 'MetaMask is not installed!';
+        }
+    </script>
+</body>
+</html>
