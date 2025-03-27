@@ -6,6 +6,7 @@ This project implements a **healthcare monitoring system** where various devices
 
 - **Main Pi (poll.py)**: The central Raspberry Pi that communicates with other raspberry pi devices through MQTT and listens for AWS SNS messages via SQS.
 - **Medication Pi (medicationClient.py)**: A Raspberry Pi that controls the medication dispenser, including dispensing medication and notifying the system when medication is picked up.
+- **Aircon Pi (airconClient.py)**: A Raspberry Pi that controls the aircon in a room, including a touch sensor that notifies the care taker if it is pressed.
 - **Flask Webserver** (app.py): A cloud-hosted Flask application that serves a user interface and interacts with the blockchain smart contract for user authentication.
 
 ## Components
@@ -34,7 +35,20 @@ This project implements a **healthcare monitoring system** where various devices
      - `RPi.GPIO` (for interacting with GPIO pins)
      - `paho.mqtt.client` (MQTT communication)
 
-### 3. **Flask Webserver (app.py)**
+
+### 3. **Aircon Pi (airconClient.py)**
+   - **Purpose**: Handles the **aircon** and communicates with the **Main Pi** via **MQTT**.
+   - **Responsibilities**:
+     - Listens for **on/off** commands via MQTT.
+     - Activates or deactivates system based on received command
+     - Sends a message via MQTT indicating whether the aircon was turned on or off
+     - Touch sensor to communicate with care taker phone
+
+   - **Key Dependencies**:
+     - `RPi.GPIO` (for interacting with GPIO pins)
+     - `paho.mqtt.client` (MQTT communication)
+
+### 4. **Flask Webserver + Smart Contract on Blockchain(app.py)**
    - **Purpose**: Provides a **web interface** for the user (caregiver) to interact with the system.
    - **Responsibilities**:
      - Verifies the **user's authorization** using a **smart contract** on the **Ethereum blockchain**.
@@ -46,7 +60,6 @@ This project implements a **healthcare monitoring system** where various devices
      - `Web3.py` (to interact with the Ethereum blockchain and the smart contract)
      - `boto3` (AWS SDK for Python)
 
-### 4. **Smart Contract on Blockchain**
    - **Purpose**: Handles user authentication through blockchain-based smart contracts, ensuring that only authorized users can interact with the system.
    - **Responsibilities**:
      - Stores a list of **authorized users** (addresses).
@@ -56,31 +69,45 @@ This project implements a **healthcare monitoring system** where various devices
      - Ethereum blockchain (Sepolia testnet)
      - Web3.js (used in the Flask app to interact with the blockchain)
 
+
+
+
 ## Setup Instructions
 
+Sure! Here's the fixed and more polished version of your **Flask Webserver Setup** section:
+
+---
+
 ### 1. **Flask Webserver Setup**
-   - Use the `inf-1006-key.pem` file to access the web server hosted on the cloud, 
-   - In terminal
-     ```bash
-    ssh -i `inf-1006-key.pem` ubuntu@3.149.253.192
-     ```
-    - Activate the virtual env
-     ```bash
-    source env/bin/activate
-     ```
-    - Run the Flask app:
-     ```bash
-     python app.py
-     ```
-    If you want to host on your cloud web server,
-   - Install the required dependencies:
-     ```bash
-     pip install flask web3 boto3
-     ```
-   - Run the Flask app:
-     ```bash
-     python app.py
-     ```
+
+To set up and run the **Flask Webserver** on your cloud-hosted Ubuntu machine:
+
+1. **Access the Web Server**:
+   Use the `inf-1006-key.pem` file to access my **web server** hosted on the cloud via SSH:
+   ```bash
+   ssh -i inf-1006-key.pem ubuntu@3.149.253.192
+   ```
+
+2. **Activate the Virtual Environment**:
+   After logging into the server, navigate to your project directory and activate the virtual environment:
+   ```bash
+   source env/bin/activate
+   ```
+
+3. **Install Required Dependencies**:
+   Install the necessary dependencies in your virtual environment (if not already installed):
+   ```bash
+   pip install flask web3 boto3
+   ```
+
+4. **Run the Flask Application**:
+   Finally, start the **Flask app**:
+   ```bash
+   python app.py
+   ```
+
+5. **Accessing the Flask App**:
+   Once the Flask app is running, you can access it by navigating to the appropriate **IP address** and **port** in a web browser. 
 
 ### 2. **Main Pi Setup**
    - Ensure that **MQTT** and **SQS** are properly configured.
@@ -101,6 +128,17 @@ This project implements a **healthcare monitoring system** where various devices
    - Run `medicationClient.py`:
      ```bash
      python medicationClient.py
+     ```
+
+
+### 4. **Aircon Pi Setup**
+   - Install the required dependencies:
+     ```bash
+     pip install paho-mqtt RPi.GPIO
+     ```
+   - Run `airconClient.py`:
+     ```bash
+     python airconClient.py
      ```
 
 ## Running the System
