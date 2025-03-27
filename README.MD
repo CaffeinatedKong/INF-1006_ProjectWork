@@ -77,19 +77,18 @@ This project implements a **healthcare monitoring system** where various devices
 
 ## Setup Instructions
 
-
 ### 1. **Flask Webserver Setup**
 
 To set up and run the **Flask Webserver** on your cloud-hosted Ubuntu machine:
 
 1. **Access the Web Server**:
-   Use the `inf-1006-key.pem` file to access my **web server** hosted on the cloud via SSH:
+   Use the `inf-1006-key.pem` file to access your **web server** hosted on the cloud via SSH:
    ```bash
    ssh -i inf-1006-key.pem ubuntu@3.149.253.192
    ```
 
 2. **Activate the Virtual Environment**:
-   After logging into the server, navigate to project directory "flask_webserver" and activate the virtual environment:
+   After logging into the server, navigate to your project directory (`flask_webserver`) and activate the virtual environment:
    ```bash
    source env/bin/activate
    ```
@@ -100,15 +99,39 @@ To set up and run the **Flask Webserver** on your cloud-hosted Ubuntu machine:
    pip install flask web3 boto3
    ```
 
-4. **Run the Flask Application**:
-   Finally, start the **Flask app**:
+4. **Deploy the Smart Contract on Remix**:
+   - Go to the **Remix IDE** (https://remix.ethereum.org/).
+   - Create a new Solidity file (`flask_app.sol`) and paste your smart contract code.
+   - Compile the smart contract using Remix's compiler.
+   - Deploy the smart contract on the **Sepolia testnet**:
+     - Use **MetaMask** for deploying the contract by selecting **Sepolia** as the network.
+     - Once deployed, make a note of the **contract address**
+   
+5. **Install MetaMask**:
+   - Install the **MetaMask** browser extension: https://metamask.io/.
+   - Set up your MetaMask wallet if you haven't already.
+   - Make sure your wallet is connected to the **Sepolia testnet** in MetaMask.
+
+6. **Add Your MetaMask Wallet Address as an Authorized User**:
+   - In Remix IDE, interact with the deployed smart contract and use the `addAuthorizedUser()` function.
+   - Provide your **MetaMask wallet address** (the one connected to the Sepolia testnet) to the contract to add it as an authorized user.
+
+7. **Run the Flask Application**:
+   After setting up everything, start the **Flask app**:
    ```bash
    python app.py
    ```
 
-5. **Accessing the Flask App**:
-   Once the Flask app is running, you can access it by navigating to the appropriate **IP address** and **port** in a web browser. 
+8. **Accessing the Flask App**:
+   Once the Flask app is running, you can access it by navigating to the appropriate **IP address** and **port** in a web browser.
 
+---
+
+### Notes:
+- The **smart contract** deployed on **Remix IDE** ensures that only authorized users (based on their **MetaMask wallet address**) can access the functions on the **Flask web server**.
+- **MetaMask** will allow you to interact with the smart contract, ensuring that the user is verified before performing any actions like controlling the air conditioner or dispensing medication.
+
+---
 ### 2. **Main Pi Setup**
    - Ensure that **MQTT** and **SQS** are properly configured.
    - Install the required dependencies:
