@@ -2,6 +2,9 @@
 
 ## Overview
 
+You can view the project on [GitHub](https://github.com/CaffeinatedKong/INF-1006_ProjectWork).
+
+
 This project implements a **healthcare monitoring system** where various devices are controlled remotely using **AWS SNS**, **MQTT**, and **Blockchain** technology for **authentication** and **security**. The system consists of multiple components running on different devices:
 
 - **Main Pi (poll.py)**: The central Raspberry Pi that communicates with other raspberry pi devices through MQTT and listens for AWS SNS messages via SQS.
