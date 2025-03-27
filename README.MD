@@ -74,9 +74,6 @@ This project implements a **healthcare monitoring system** where various devices
 
 ## Setup Instructions
 
-Sure! Here's the fixed and more polished version of your **Flask Webserver Setup** section:
-
----
 
 ### 1. **Flask Webserver Setup**
 
@@ -89,7 +86,7 @@ To set up and run the **Flask Webserver** on your cloud-hosted Ubuntu machine:
    ```
 
 2. **Activate the Virtual Environment**:
-   After logging into the server, navigate to your project directory and activate the virtual environment:
+   After logging into the server, navigate to project directory "flask_webserver" and activate the virtual environment:
    ```bash
    source env/bin/activate
    ```
