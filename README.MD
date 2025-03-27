@@ -61,11 +61,15 @@ This project implements a **healthcare monitoring system** where various devices
 ### 1. **Flask Webserver Setup**
    - Use the `inf-1006-key.pem` file to access the web server hosted on the cloud, 
    - In terminal
+     ```bash
     ssh -i `inf-1006-key.pem` ubuntu@3.149.253.192
-    - Activate the virtual env,
+     ```
+    - Activate the virtual env
+     ```bash
     source env/bin/activate
+     ```
     - Run the Flask app:
-    ```bash
+     ```bash
      python app.py
      ```
     If you want to host on your cloud web server,
