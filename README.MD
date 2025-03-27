@@ -77,18 +77,30 @@ This project implements a **healthcare monitoring system** where various devices
 
 ## Setup Instructions
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> f50ec8c130def8a78f184f915401afc14fbd2694
 ### 1. **Flask Webserver Setup**
 
 To set up and run the **Flask Webserver** on your cloud-hosted Ubuntu machine:
 
 1. **Access the Web Server**:
+<<<<<<< HEAD
    Use the `inf-1006-key.pem` file to access your **web server** hosted on the cloud via SSH:
+=======
+   Use the `inf-1006-key.pem` file to access my **web server** hosted on the cloud via SSH:
+>>>>>>> f50ec8c130def8a78f184f915401afc14fbd2694
    ```bash
    ssh -i inf-1006-key.pem ubuntu@3.149.253.192
    ```
 
 2. **Activate the Virtual Environment**:
+<<<<<<< HEAD
    After logging into the server, navigate to your project directory (`flask_webserver`) and activate the virtual environment:
+=======
+   After logging into the server, navigate to project directory "flask_webserver" and activate the virtual environment:
+>>>>>>> f50ec8c130def8a78f184f915401afc14fbd2694
    ```bash
    source env/bin/activate
    ```
@@ -99,6 +111,7 @@ To set up and run the **Flask Webserver** on your cloud-hosted Ubuntu machine:
    pip install flask web3 boto3
    ```
 
+<<<<<<< HEAD
 4. **Deploy the Smart Contract on Remix**:
    - Go to the **Remix IDE** (https://remix.ethereum.org/).
    - Create a new Solidity file (`flask_app.sol`) and paste your smart contract code.
@@ -118,10 +131,15 @@ To set up and run the **Flask Webserver** on your cloud-hosted Ubuntu machine:
 
 7. **Run the Flask Application**:
    After setting up everything, start the **Flask app**:
+=======
+4. **Run the Flask Application**:
+   Finally, start the **Flask app**:
+>>>>>>> f50ec8c130def8a78f184f915401afc14fbd2694
    ```bash
    python app.py
    ```
 
+<<<<<<< HEAD
 8. **Accessing the Flask App**:
    Once the Flask app is running, you can access it by navigating to the appropriate **IP address** and **port** in a web browser.
 
@@ -132,6 +150,11 @@ To set up and run the **Flask Webserver** on your cloud-hosted Ubuntu machine:
 - **MetaMask** will allow you to interact with the smart contract, ensuring that the user is verified before performing any actions like controlling the air conditioner or dispensing medication.
 
 ---
+=======
+5. **Accessing the Flask App**:
+   Once the Flask app is running, you can access it by navigating to the appropriate **IP address** and **port** in a web browser. 
+
+>>>>>>> f50ec8c130def8a78f184f915401afc14fbd2694
 ### 2. **Main Pi Setup**
    - Ensure that **MQTT** and **SQS** are properly configured.
    - Install the required dependencies:
