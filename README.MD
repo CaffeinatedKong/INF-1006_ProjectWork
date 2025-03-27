@@ -47,9 +47,11 @@ This project implements a **healthcare monitoring system** where various devices
      - Sends a message via MQTT indicating whether the aircon was turned on or off
      - Touch sensor to communicate with care taker phone
 
-   - **Key Dependencies**:
-     - `RPi.GPIO` (for interacting with GPIO pins)
-     - `paho.mqtt.client` (MQTT communication)
+- **Key Dependencies**:
+  - `RPi.GPIO` (for interacting with GPIO pins)
+  - `paho.mqtt.client` (for MQTT communication)
+  - `pigpio` (for handling IR signal transmission)
+  - `adafruit_dht` (for reading temperature data)
 
 ### 4. **Flask Webserver + Smart Contract on Blockchain(app.py)**
    - **Purpose**: Provides a **web interface** for the user (caregiver) to interact with the system.
@@ -154,15 +156,16 @@ To set up and run the **Flask Webserver** on your cloud-hosted Ubuntu machine:
      ```
 
 
-### 4. **Aircon Pi Setup**
-   - Install the required dependencies:
-     ```bash
-     pip install paho-mqtt RPi.GPIO
-     ```
-   - Run `airconClient.py`:
+### 4. **Aircon Pi Setup**:
+1. **Install Dependencies**:
+   ```bash
+   pip install paho-mqtt RPi.GPIO pigpio adafruit-dht
+   ```
+
+2. **Run the Aircon Pi Script**:
+   - Run `airconClient.py` on the Aircon Pi:
      ```bash
      python airconClient.py
-     ```
 
 ## Running the System
 1. The **Flask Webserver** serves the interface where caretakers can press buttons to control devices.
