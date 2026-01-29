@@ -7,7 +7,7 @@ import threading
 app = Flask(__name__)
 
 # Connect to Infura 
-web3 = Web3(Web3.HTTPProvider("https://sepolia.infura.io/v3/538e80ba011f4cfca52c79d37b2060e3"))
+web3 = Web3(Web3.HTTPProvider("https://sepolia.infura.io/v3/"))
 
 # Check connection to Sepolia testnet
 if not web3.is_connected():
@@ -16,7 +16,7 @@ else:
     print("Connected to Sepolia testnet.")
 
 # Smart contract details
-contract_address = "0xC18a982b28c430d8C63953616F61770e9450FB63"
+contract_address = ""
 contract_abi = [
 	{
 		"inputs": [],
@@ -125,12 +125,12 @@ contract_abi = [
 contract = web3.eth.contract(address=contract_address, abi=contract_abi)
 
 #AWS Credentials
-aws_access_key = 'AKIA32FE4466CJJ33DYS'
-aws_secret_key = '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'
+aws_access_key = ''
+aws_secret_key = ''
 iot_client = boto3.client('sns', region_name='us-east-2',aws_access_key_id=aws_access_key,
                           aws_secret_access_key=aws_secret_key)
-SNS_TOPIC_ARN_AIRPORT = "arn:aws:sns:us-east-2:812094646204:AirconController"
-SNS_TOPIC_ARN_MEDICATION = "arn:aws:sns:us-east-2:812094646204:MedicationDispenserController"
+SNS_TOPIC_ARN_AIRPORT = ""
+SNS_TOPIC_ARN_MEDICATION = ""
 # The AWS IoT topic Raspberry Pi is subscribed to
 TOPIC = 'home/aircon/control'
 
